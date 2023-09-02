@@ -31,7 +31,7 @@ export const Login = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Button loading={true} thickness="thick">
+        <Button loading={false} thickness="thick">
           Login
         </Button>
         <Link className="pt-4 hover:underline mx-auto " to="/signup">

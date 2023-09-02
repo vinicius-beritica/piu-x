@@ -1,5 +1,8 @@
 import { QueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { config } from "dotenv";
+
+config();
 
 axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 
