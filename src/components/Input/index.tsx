@@ -20,6 +20,7 @@ export const Input = ({ placeholder, value, ...props }: ButtonProps) => {
         className={`px-2 w-full focus:outline focus:outline-primary-100 ${
           placeholder ? "pt-5 pb-2" : "py-3"
         }`}
+        required
       />
     </div>
   );

@@ -1,5 +1,4 @@
-import axios from "axios";
-import { useContext, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { NewPiupiu } from "../components/NewPiupiu";
 import { Piu } from "../types/Pius";
 import NavTitle from "../components/NavTitle";
@@ -8,24 +7,41 @@ import { usePagination } from "../hooks/useScroll";
 import { piuComponentHeight } from "../consts";
 import { User } from "../types/Users";
 import { routes } from "../routes";
-import { AuthContext } from "../Context/AuthContext";
-import { ProfilePicGroup } from "../components/ProfilePicGroup";
-import { NavHeader } from "../components/NavHeader";
-import { SideBar } from "../components/SideBar";
+import { apiPiu } from "../service/api";
+import { useQueryHome } from "../hooks/useQueryHome";
 
 export const Home = () => {
   const [textValue, setTextValue] = useState("");
-  const [piupius, setPiupius] = useState<Piu[] | undefined>();
+  const [piupius, setPiupius] = useState<Piu[] | undefined>([]);
   const [newData, setNewData] = useState<Piu[] | undefined>();
   const [addingPiupiu, setAddingPiupiu] = useState(false);
-  const { auth } = useContext(AuthContext);
   const topRef = useRef<HTMLDivElement | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const itemsPerPage = Math.ceil(window.screen.height / piuComponentHeight);
+  const { data, isLoading, refetch, fetchNextPage, hasNextPage } =
+    useQueryHome();
+
+  useEffect(() => {
+    const dataPius = data?.pages && data.pages.flatMap((page) => page.data);
+    if (
+      dataPius &&
+      dataPius.length > 0 &&
+      piupius &&
+      piupius.length > 0 &&
+      dataPius[0].id != piupius[0].id
+    ) {
+      setNewData(dataPius);
+    }
+    setPiupius(dataPius);
+  }, [data]);
 
   const { scrollTop } = usePagination({
-    onBottomEnter: () => {},
-    onTopEnter: () => {},
+    onBottomEnter: () => {
+      hasNextPage && fetchNextPage();
+    },
+    onTopEnter: () => {
+      setNewData([]);
+    },
     onTopLeave: () => {},
     bottomRef,
     topRef,
@@ -35,26 +51,25 @@ export const Home = () => {
   const handleSubmit = async (e: React.FormEvent, formValue?: string) => {
     e.preventDefault();
     setAddingPiupiu(true);
-    axios
-      .post("/posts", {
-        message: formValue,
-      })
-      .then(() => {
-        setTextValue("");
-      })
-      .finally(() => {
-        setAddingPiupiu(false);
-      });
+    try {
+      await apiPiu
+        .post(`posts`, {
+          message: formValue,
+        })
+        .then((response) => {
+          if (response.status === 200) {
+            refetch();
+            setTextValue("");
+          }
+        })
+        .finally(() => setAddingPiupiu(false));
+    } catch (error) {
+      throw new Error();
+    }
   };
 
   return (
     <>
-      {auth && (
-        <>
-          {/* Componentes que só devem ser exibidos quando o usuário estiver logado */}
-          <SideBar />
-        </>
-      )}
       <div ref={topRef} className="relative">
         <NavTitle
           position="sticky"
@@ -79,10 +94,10 @@ export const Home = () => {
           user={{} as User}
         />
         <PiupiuList
-          initialLoading={false}
+          initialLoading={isLoading}
           topRef={topRef}
           bottomRef={bottomRef}
-          loading={false}
+          loading={true}
           piupius={piupius}
           onChange={() => {}}
         />

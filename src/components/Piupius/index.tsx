@@ -3,12 +3,12 @@ import { User } from "../../types/Users";
 import { ProfilePic } from "../ProfilePic";
 import { ReactionsBar, reactions } from "../ReactionsBar";
 import { Username } from "../Username";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import NewPiupiu from "../NewPiupiu";
 import { forwardRef } from "react";
 import { checkForImageLinks } from "../../helpers";
 import { backendRoutes, routes } from "../../routes";
+import { apiPiu } from "../../service/api";
 
 type PiupiuProps = {
   id: string;
@@ -40,9 +40,9 @@ export const Piupiu = forwardRef(
         if (liked !== reactions.like?.active) return;
         try {
           if (!liked) {
-            await axios.post(backendRoutes.singlePiupiu.like(id));
+            await apiPiu.post(backendRoutes.singlePiupiu.like(id));
           } else {
-            await axios.delete(backendRoutes.singlePiupiu.like(id));
+            await apiPiu.delete(backendRoutes.singlePiupiu.like(id));
           }
         } catch (err) {
           setLiked(!liked);
@@ -57,7 +57,7 @@ export const Piupiu = forwardRef(
       e.preventDefault();
       setReplying(true);
       try {
-        await axios.post(`/posts/${id}/reply`, {
+        await apiPiu.post(`/posts/${id}/reply`, {
           message: submitingText,
         });
         setReplies(replies + 1);

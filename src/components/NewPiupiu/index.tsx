@@ -1,10 +1,11 @@
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useContext, useMemo, useState } from "react";
 import { ProfilePic } from "../ProfilePic";
 import { Button } from "../Button";
 import sound from "../../assets/E o pintinho piu.mp3";
 import { Textarea } from "../Textarea";
 import { DeletableImage } from "../DeletableImage";
 import { checkForImageLinks } from "../../helpers";
+import { AuthContext } from "../../Context/AuthContext";
 
 type NewPiupiuProps = {
   user: {
@@ -28,6 +29,7 @@ export const NewPiupiu = ({
   onSubmit,
   loading,
 }: NewPiupiuProps) => {
+  const userContext = useContext(AuthContext);
   const [isActive, setIsActive] = useState(false);
   const [error, setError] = useState(false);
   const [foundLinks, setFoundLinks] = useState("");
@@ -73,7 +75,7 @@ export const NewPiupiu = ({
           : " border-[#2f3336] border-t-0  border-[1px]"
       } select-none w-full h-min px-4 py-2 focus:outline-none`}
     >
-      <ProfilePic userName={user.name} image={user.image_url} />
+      <ProfilePic userName={userContext.name} image={userContext.image_url} />
       <form
         onSubmit={handleSubmit}
         className={`w-full px-3 flex justify-end ${

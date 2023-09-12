@@ -3,6 +3,8 @@ import { User } from "../../types/Users";
 import { Popover } from "../Popover";
 import { ProfilePic } from "../ProfilePic";
 import { Username } from "../Username";
+import { AuthContext } from "../../Context/AuthContext";
+import { useContext } from "react";
 
 type SessionControllerProps = {
   user: User;
@@ -11,11 +13,14 @@ type SessionControllerProps = {
     onClick: () => void;
   }[];
 };
-export const SessionController = ({
-  options,
-  user,
-}: SessionControllerProps) => {
+export const SessionController = ({ options }: SessionControllerProps) => {
   const [isActive, setIsActive] = useState(false);
+  const userData = useContext(AuthContext);
+
+  const handleLogout = () => {
+    localStorage.clear();
+    window.location.reload();
+  };
 
   return (
     <button
@@ -29,19 +34,19 @@ export const SessionController = ({
           <span
             className="py-2 px-4 hover:bg-zinc-900 flex justify-start"
             key={item.text}
-            onClick={item.onClick}
+            onClick={handleLogout}
           >
             {item.text}
           </span>
         ))}
       </Popover>
 
-      <ProfilePic image={user.image_url} userName={user.name} />
+      <ProfilePic image={userData.image_url} userName={userData.name} />
       <Username
         showVerified={false}
         clickable={false}
         variant="column"
-        user={user}
+        user={userData}
       />
       <span className="text-2xl ml-auto self-start ">...</span>
     </button>

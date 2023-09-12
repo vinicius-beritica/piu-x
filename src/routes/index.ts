@@ -3,6 +3,7 @@ export const routes = {
   following: "/stalking",
   login: "",
   signup: "/signup",
+  main: "/main",
   singlePiupiu: (id: string = ":id") => `/piu/${id}`,
   profile: (handle: string = ":handle") => `/${handle}`,
   userLikes: (handle: string = ":handle") => `/${handle}/likes`,
