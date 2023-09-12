@@ -36,6 +36,7 @@ export const Reaction = ({
     e.stopPropagation();
     e.preventDefault();
     onClick?.();
+    // alert("Click no Reaction!");
   };
 
   return (

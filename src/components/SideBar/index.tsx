@@ -3,32 +3,47 @@ import { BsPerson } from "react-icons/bs";
 import { LuVerified } from "react-icons/lu";
 import { Button } from "../Button";
 import { SessionController } from "../SessionController";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { Dialog } from "../Dialog";
 import NewPiupiu from "../NewPiupiu";
 import { useState } from "react";
-import axios from "axios";
 import { User } from "../../types/Users";
-import { backendRoutes } from "../../routes";
+import { routes } from "../../routes";
+import { AuthContext } from "../../Context/AuthContext";
+import { useContext } from "react";
+import { apiPiu } from "../../service/api";
+import { useQueryHome } from "../../hooks/useQueryHome";
+
 export const SideBar = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [addingPiupiu, setAddingPiupiu] = useState(false);
   const [textValue, setTextValue] = useState("");
+  const dataContext = useContext(AuthContext);
+  const { handle } = useParams();
+  const navPage = useNavigate();
+  const { refetch } = useQueryHome();
 
   const handleSubmit = async (e: React.FormEvent, formValue?: string) => {
     e.preventDefault();
     setAddingPiupiu(true);
-    axios
-      .post("/posts", {
-        message: formValue,
-      })
-      .then(() => {
-        setTextValue("");
-      })
-      .finally(() => {
-        setAddingPiupiu(false);
-        setOpenDialog(false);
-      });
+    try {
+      await apiPiu
+        .post(`posts`, {
+          message: formValue,
+        })
+        .then((response) => {
+          if (response.status === 200) {
+            setTextValue("");
+            refetch();
+          }
+        })
+        .finally(() => {
+          setAddingPiupiu(false);
+          setOpenDialog(false);
+        });
+    } catch (error) {
+      throw new Error();
+    }
   };
 
   return (
@@ -47,7 +62,7 @@ export const SideBar = () => {
               </li>
             </NavLink>
             <NavLink
-              to={backendRoutes.profile()}
+              to={routes.profile(dataContext.handle)}
               className={({ isActive }) => (isActive ? "font-bold" : "")}
             >
               <li className="flex mb-4 p-3 pr-8 w-min cursor-pointer  rounded-full hover:bg-zinc-900 items-center gap-4">
@@ -77,10 +92,14 @@ export const SideBar = () => {
               text: "Entrar com outra conta",
               onClick: () => {},
             },
-            { text: `Sair de @`, onClick: () => {} },
+            {
+              text: `Sair de @${dataContext.handle}`,
+              onClick: () => {},
+            },
           ]}
         />
       </nav>
+      {/* Botão "Piar". Abre o modal para inserir texto */}
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
         <div className="w-[min(566px,100vw)] p-1">
           <NewPiupiu

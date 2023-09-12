@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Piu } from "../../types/Pius";
 import { CircularSpinner } from "../CircularSpinner";
 import Piupiu from "../Piupius";
@@ -28,40 +28,49 @@ export const PiupiuList = ({
     [bottomRef, piupius, topRef]
   );
 
+  // const [currentPage, setCurrentPage] = useState(1);
+
   return initialLoading ? (
-    <div className="w-full flex items-center h-[50vh] justify-center">
+    <div
+      id="initial-loanding"
+      className="w-full flex items-center h-[50vh] justify-center"
+    >
       <CircularSpinner />
     </div>
   ) : (
     <>
-      {piupius?.map((piupiu: Piu, index) => {
-        return (
-          <Piupiu
-            ref={getRef(index)}
-            key={piupiu.id}
-            id={piupiu.id}
-            author={piupiu.author}
-            onChange={onChange}
-            reactions={{
-              comment: {
-                active: false,
-                total: piupiu.replies?.total,
-              },
-              repiu: {
-                active: false,
-                total: 0,
-              },
-              like: {
-                total: piupiu.likes?.total,
-                active: piupiu.liked,
-              },
-            }}
-            body={piupiu.message}
-          />
-        );
-      })}
+      {Array.isArray(piupius) &&
+        piupius?.map((piupiu: Piu, index) => {
+          return (
+            <Piupiu
+              ref={getRef(index)}
+              key={piupiu.id}
+              id={piupiu.id}
+              author={piupiu.author}
+              onChange={onChange}
+              reactions={{
+                comment: {
+                  active: false,
+                  total: piupiu.replies?.total,
+                },
+                repiu: {
+                  active: false,
+                  total: 0,
+                },
+                like: {
+                  total: piupiu.likes?.total,
+                  active: piupiu.liked,
+                },
+              }}
+              body={piupiu.message}
+            />
+          );
+        })}
       {loading && (
-        <div className="w-full h-14 flex items-center justify-center">
+        <div
+          id="loading-circle"
+          className="w-full h-14 flex items-center justify-center"
+        >
           <CircularSpinner />
         </div>
       )}

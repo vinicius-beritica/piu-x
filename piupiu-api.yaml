@@ -2,10 +2,10 @@ openapi: 3.1.0
 info:
   title: Raro Academy - Piupiu API
   description: |-
-  version: '0.1'
+  version: "0.1"
 externalDocs:
   description: Conheça o piupiu
-  url: 'https://piupiu-web.vercel.app/'
+  url: "https://piupiu-web.vercel.app/"
 servers:
   - url: https://piupiu-api.onrender.com
 tags:
@@ -27,35 +27,35 @@ paths:
       parameters:
         - name: handle
           in: query
-          description: 'The user handle whose posts need to be fetched'
+          description: "The user handle whose posts need to be fetched"
           required: false
           schema:
-            type: string 
+            type: string
         - name: page
           in: query
-          description: 'Page number'
+          description: "Page number"
           required: false
           schema:
             type: number
         - name: per_page
           in: query
-          description: 'Items per page'
+          description: "Items per page"
           required: false
           schema:
-            type: number                     
+            type: number
       responses:
-        '200':
+        "200":
           description: Successful operation
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Piu'
+                  $ref: "#/components/schemas/Piu"
             application/xml:
               schema:
                 items:
-                  $ref: '#/components/schemas/Piu'
+                  $ref: "#/components/schemas/Piu"
       security:
         - bearerAuth: []
   /posts:
@@ -64,7 +64,7 @@ paths:
         - Pius
       summary: Creates new piu
       description: Creates new piu given a message
-      operationId: postPiu 
+      operationId: postPiu
       requestBody:
         description: New post object
         content:
@@ -75,15 +75,15 @@ paths:
                 message:
                   type: string
       responses:
-        '200':
+        "200":
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Piu'
+                $ref: "#/components/schemas/Piu"
             application/xml:
               schema:
-                $ref: '#/components/schemas/Piu'
+                $ref: "#/components/schemas/Piu"
       security:
         - bearerAuth: []
   /posts/{postId}:
@@ -96,20 +96,20 @@ paths:
       parameters:
         - name: postId
           in: path
-          description: 'The name that needs to be fetched. Use user1 for testing. '
+          description: "The name that needs to be fetched. Use user1 for testing. "
           required: true
           schema:
-            type: string      
+            type: string
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
               schema:
-                  $ref: '#/components/schemas/Piu'
+                $ref: "#/components/schemas/Piu"
             application/xml:
               schema:
-                $ref: '#/components/schemas/Piu'
+                $ref: "#/components/schemas/Piu"
       security:
         - bearerAuth: []
   /posts/{postId}/like:
@@ -122,20 +122,20 @@ paths:
       parameters:
         - name: handle
           in: path
-          description: 'The name that needs to be fetched. Use user1 for testing. '
+          description: "The name that needs to be fetched. Use user1 for testing. "
           required: true
           schema:
-            type: string      
+            type: string
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
               schema:
-                  $ref: '#/components/schemas/Piu'
+                $ref: "#/components/schemas/Piu"
             application/xml:
               schema:
-                $ref: '#/components/schemas/Piu'
+                $ref: "#/components/schemas/Piu"
       security:
         - bearerAuth: []
     delete:
@@ -147,22 +147,22 @@ paths:
       parameters:
         - name: handle
           in: path
-          description: 'The name that needs to be fetched. Use user1 for testing. '
+          description: "The name that needs to be fetched. Use user1 for testing. "
           required: true
           schema:
-            type: string      
+            type: string
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
               schema:
-                  $ref: '#/components/schemas/Piu'
+                $ref: "#/components/schemas/Piu"
             application/xml:
               schema:
-                $ref: '#/components/schemas/Piu'
+                $ref: "#/components/schemas/Piu"
       security:
-        - bearerAuth: []          
+        - bearerAuth: []
   /posts/{postId}/likes:
     get:
       tags:
@@ -173,12 +173,12 @@ paths:
       parameters:
         - name: handle
           in: path
-          description: 'The name that needs to be fetched. Use user1 for testing. '
+          description: "The name that needs to be fetched. Use user1 for testing. "
           required: true
           schema:
-            type: string      
+            type: string
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
@@ -190,10 +190,10 @@ paths:
                   users:
                     type: array
                     items:
-                      $ref: '#/components/schemas/User'
+                      $ref: "#/components/schemas/User"
             application/xml:
               schema:
-                $ref: '#/components/schemas/Piu'
+                $ref: "#/components/schemas/Piu"
       security:
         - bearerAuth: []
   /posts/{postId}/reply:
@@ -206,10 +206,10 @@ paths:
       parameters:
         - name: handle
           in: path
-          description: 'The name that needs to be fetched. Use user1 for testing. '
+          description: "The name that needs to be fetched. Use user1 for testing. "
           required: true
           schema:
-            type: string      
+            type: string
       requestBody:
         description: New post object
         content:
@@ -220,7 +220,7 @@ paths:
                 message:
                   type: string
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
@@ -232,10 +232,10 @@ paths:
                   users:
                     type: array
                     items:
-                      $ref: '#/components/schemas/User'
+                      $ref: "#/components/schemas/User"
             application/xml:
               schema:
-                $ref: '#/components/schemas/Piu'
+                $ref: "#/components/schemas/Piu"
       security:
         - bearerAuth: []
   /posts/{postId}/replies:
@@ -246,7 +246,7 @@ paths:
       description: Gets all replies to a given post
       operationId: getPostReplies
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
@@ -258,12 +258,12 @@ paths:
                   users:
                     type: array
                     items:
-                      $ref: '#/components/schemas/User'
+                      $ref: "#/components/schemas/User"
             application/xml:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: "#/components/schemas/User"
       security:
-        - bearerAuth: []                                 
+        - bearerAuth: []
   /signup:
     post:
       tags:
@@ -278,34 +278,34 @@ paths:
             schema:
               type: object
               properties:
-                name: 
+                name:
                   type: string
-                handle: 
+                handle:
                   type: string
                 password:
                   type: string
           application/xml:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: "#/components/schemas/User"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: "#/components/schemas/User"
       responses:
         default:
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: "#/components/schemas/User"
             application/xml:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: "#/components/schemas/User"
   /login:
     post:
       tags:
         - Auth
       summary: Logs user into the system
-      description: ''
+      description: ""
       operationId: loginUser
       requestBody:
         description: User object
@@ -314,12 +314,12 @@ paths:
             schema:
               type: object
               properties:
-                handle: 
+                handle:
                   type: string
                 password:
                   type: string
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
@@ -328,50 +328,50 @@ paths:
                 properties:
                   token:
                     type: string
-                  exp: 
+                  exp:
                     type: string
                     format: date-time
                   user:
-                   $ref: '#/components/schemas/User'  
+                    $ref: "#/components/schemas/User"
             application/xml:
               schema:
                 type: object
                 properties:
                   token:
                     type: string
-                  exp: 
+                  exp:
                     type: string
                     format: date
 
-        '400':
-          description: Invalid username/password supplied                
+        "400":
+          description: Invalid username/password supplied
   /user/{handle}:
     get:
       tags:
         - User
       summary: Get user by user name
-      description: ''
+      description: ""
       operationId: getUserByName
       parameters:
         - name: handle
           in: path
-          description: 'The name that needs to be fetched. Use user1 for testing. '
+          description: "The name that needs to be fetched. Use user1 for testing. "
           required: true
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: "#/components/schemas/User"
             application/xml:
               schema:
-                $ref: '#/components/schemas/User'
-        '400':
+                $ref: "#/components/schemas/User"
+        "400":
           description: Invalid username supplied
-        '404':
+        "404":
           description: User not found
     patch:
       tags:
@@ -391,13 +391,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: "#/components/schemas/User"
           application/xml:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: "#/components/schemas/User"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: "#/components/schemas/User"
       responses:
         default:
           description: successful operation
@@ -409,19 +409,19 @@ paths:
       description: Creates list of users with given input array
       operationId: postsFromUser
       responses:
-        '200':
+        "200":
           description: Successful operation
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Piu'
+                  $ref: "#/components/schemas/Piu"
             application/xml:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Piu'
+                  $ref: "#/components/schemas/Piu"
         default:
           description: successful operation
   /user/{handle}/likes:
@@ -432,16 +432,16 @@ paths:
       description: Get all liked posts from a user
       operationId: likesFromUser
       responses:
-        '200':
+        "200":
           description: Successful operation
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Piu'
+                  $ref: "#/components/schemas/Piu"
         default:
-          description: successful operation                    
+          description: successful operation
 components:
   schemas:
     User:
@@ -472,8 +472,8 @@ components:
           type: string
           format: string
           examples: [10]
-        author: 
-          $ref: '#/components/schemas/User'
+        author:
+          $ref: "#/components/schemas/User"
       xml:
         name: order
 
@@ -488,7 +488,7 @@ components:
         message:
           type: string
       xml:
-        name: '##default'
+        name: "##default"
   requestBodies:
     UserArray:
       description: List of user object
@@ -497,7 +497,7 @@ components:
           schema:
             type: array
             items:
-              $ref: '#/components/schemas/User'
+              $ref: "#/components/schemas/User"
   securitySchemes:
     bearerAuth:
       type: http

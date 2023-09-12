@@ -15,7 +15,7 @@ export const ProfileEditForm = ({ onSubmit, user }: ProfileEditFormProps) => {
   const [description, setDescription] = useState(user.description || "");
   const [name, setName] = useState(user.name);
 
-  const handleOnSubmit = (e: React.FormEvent) => {
+  const handleOnSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const userData: Partial<User> = {
       description,
@@ -24,7 +24,6 @@ export const ProfileEditForm = ({ onSubmit, user }: ProfileEditFormProps) => {
     };
     onSubmit?.(userData);
   };
-
   return (
     <>
       <form
@@ -34,22 +33,22 @@ export const ProfileEditForm = ({ onSubmit, user }: ProfileEditFormProps) => {
         <ProfilePic
           variant="reallyBig"
           userName=""
-          image={imageUrl || user.image_url}
+          image={imageUrl || user?.image_url}
         />
         <Input
           placeholder="Link da imagem"
-          value={imageUrl}
+          value={imageUrl || user?.image_url}
           onChange={(e) => setImageUrl(e.target.value)}
         />
         <Input
-          defaultValue={user.name}
+          defaultValue={user?.name}
           placeholder="Nome"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
         <Textarea
           variant="styled"
-          value={description}
+          value={description || user?.description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Descrição"
         />

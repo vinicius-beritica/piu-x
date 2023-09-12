@@ -1,12 +1,17 @@
-import { Outlet } from "react-router-dom";
+import { BrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import "./App.css";
 import { useContext } from "react";
-import { AuthContext } from "./Context/AuthContext";
+import AuthProvider, { AuthContext } from "./Context/AuthContext";
+import { PiupiuRoutes } from "./routes/PiupiuRoutes";
 
 function App() {
-  const { auth } = useContext(AuthContext);
-  console.log(auth);
-  return <Outlet />;
+  // const { auth } = useContext(AuthContext);
+  // console.log(auth);
+  return (
+    <BrowserRouter>
+      <PiupiuRoutes />
+    </BrowserRouter>
+  );
 }
 
 export default App;
